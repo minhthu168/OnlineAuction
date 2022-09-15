@@ -1,0 +1,108 @@
+﻿@model IEnumerable<eProject.ViewModel.CatAuctionUser>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/_Layout.cshtml";
+
+}
+<h1 class="text-center">Management Auction</h1><br /><br />
+<p id="menulist">
+    <a asp-action="Index" asp-controller="Auction">All Auction</a> 
+    <a asp-route-list="Approval" asp-action="Index" asp-controller="Auction">Auction pending approval</a> 
+    <a asp-route-list="Active" asp-action="Index" asp-controller="Auction">Active Auction</a>
+    <a asp-route-list="Inactive" asp-action="Index" asp-controller="Auction">Inactive Auction</a>
+</p>
+<table class="table table-hover" id="auction">
+    <thead class="table-success">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Auction.AuctionId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Auction.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Auction.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category.CategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Auction.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Auction.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Auction.MinimumBid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Auction.BidIncremenent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Auction.Condition)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Auction.AuctionId</td>
+                <td>@item.Auction.Title</td>
+                <td>
+                    @{ var images = item.Auction.Image.Split(",");                      
+                        <img src="~/images/@images[0]" style="height: 200px; max-width: 400px">
+                    }
+                </td>
+                <td>@item.Category.CategoryName</td>
+                <td>@item.Auction.StartDate</td>
+                <td>@item.Auction.EndDate</td>
+                <td>@item.Auction.MinimumBid</td>
+                <td>@item.Auction.BidIncremenent</td>
+                <td>@item.Auction.Condition</td>                
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = item.Auction.AuctionId })
+                    @if (item.Auction.Status == "Active")
+                    {
+                        @Html.ActionLink("Lock", "InactiveAuction", new { id = item.Auction.AuctionId })
+                    }
+                    else if (item.Auction.Status == "Approval")
+                    {
+                        @Html.ActionLink("Approval", "ActiveAuction", new { id = item.Auction.AuctionId })
+                    }
+                    else if (item.Auction.Status == "Inactive")
+                    {
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Auction.AuctionId }, new { onclick = "return confirm('Are you sure to delete?')" })
+                    }
+                </td>
+
+            </tr>
+
+        }
+    </tbody>
+</table>
+<script>
+    $(function () {
+        $('#auction').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": false,
+            "info": true,
+            "autoWidth": false,
+        });
+    });
+</script>
+<style>
+    #menulist a{
+        text-decoration:none;
+        text-align:center;
+        font-size:larger;
+        color:blueviolet;
+        padding-right:3%;
+        border:thin ridge lightgray;
+        background-color:bisque;
+    }
+</style>

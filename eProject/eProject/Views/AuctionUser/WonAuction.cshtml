@@ -1,0 +1,84 @@
+﻿@model IEnumerable<eProject.ViewModel.ViewAuctionWin>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="row" style="margin:auto;margin-top:10%;">
+    <div class="col-md-3" style="padding-left:3%;">
+        <!-- Panel -->
+        <img src="~/frontend/images/icon-user.png" width="200" />
+        <h3 class="font-weight-bold dark-grey-text" style="padding-left:3%;">
+            <strong>@ViewBag.user.Username</strong>
+        </h3><br />
+        <div class="divider"></div>
+
+        <p class="dark-grey-text"><a>Profile</a></p>
+        <p class="dark-grey-text"><a asp-action="Edit" asp-controller="PageUser" asp-route-id="@ViewBag.user.UserId">Edit Information</a></p>
+        <p class="dark-grey-text"><a asp-action="ResetPass" asp-controller="PageUser" asp-route-id="@ViewBag.user.UserId">Change Password</a></p>
+        <p class="dark-grey-text"><a href="~/AuctionUser/MyAuction">My auction</a></p>
+        <p class="dark-grey-text"><a href="~/AuctionUser/WonAuction">Auction won</a></p>
+        <p class="dark-grey-text"><a href="~/AuctionUser/JoinAuction">Auction participated</a></p>
+        <p class="dark-grey-text"><a>Message</a></p>
+    </div>
+    <div class="col-md-8">
+        <h1 class="text-center">Auction Won</h1>
+        <div class="row" style="margin:2%">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-3 mb-3">
+
+                    <!--Card-->
+                    <div class="card card-ecommerce">
+
+                        <!--Card image-->
+                        <div class="view overlay">
+                            @{
+                                var image = item.Auction.Image.Split(",");
+                            }
+                            <img src="~/images/@image[0]" style="height: 200px; max-width: 400px">
+                            <a>
+                                <div class="mask rgba-white-slight"></div>
+                            </a>
+                        </div>
+                        <!--Card image-->
+                        <!--Card content-->
+                        <div class="card-body">
+                            <!--Category & Title-->
+
+                            <h5 class="card-title mb-1">
+                                <strong>
+                                    <a href="~/PageAuction/Details/@item.Auction.AuctionId" class="dark-grey-text">@item.Auction.Title</a>
+                                </strong>
+                            </h5>
+                            @if (item.Auction.Status == "Active")
+                            {
+                                <span class="badge badge-danger mb-2">New</span>
+                            }
+                            else if (item.Auction.Status == "Inactive")
+                            {
+                                <span class="badge badge-info mb-2">Finish</span>
+                            }
+
+                            <!--Card footer-->
+                            <div class="card-footer pb-0">
+                                <div class="row mb-0">
+                                    <span class="float-left">
+                                        <strong>@item.Auction.SalePrice $</strong>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--Card content-->
+
+                    </div>
+                    <!--Card-->
+
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+

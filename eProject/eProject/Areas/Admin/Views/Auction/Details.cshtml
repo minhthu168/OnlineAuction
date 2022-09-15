@@ -1,0 +1,181 @@
+﻿@model eProject.ViewModel.CatAuctionUser
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/_Layout.cshtml";
+}
+<div style="align-content:center;padding:8%;">
+    <div class="row" style="border: thin ridge lightgray; border-radius: 10px; padding: 10px; box-shadow: 5px 5px 5px gray;">
+        <div class="col-md-4">
+            <!--Carousel Wrapper-->
+            <div id="carousel-thumb" class="carousel slide carousel-fade carousel-thumbnails" data-ride="carousel">
+
+                <!--Slides-->
+                <div class="carousel-inner text-center text-md-left" role="listbox">
+                    @{
+                        var images = Model.Auction.Image.Split(",");
+                        <div class="carousel-item active">
+                            <img src="~/images/@images[0]" class="img-fluid">
+                        </div>
+                        if (images.Length > 1)
+                        {
+                            for (int i = 1; i < images.Length; i++)
+                            {
+
+                                <div class="carousel-item">
+                                    <img src="~/images/@images[i]" alt="First slide" class="img-fluid">
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+                <!--/.Slides-->
+                <!--Thumbnails-->
+                <a class="carousel-control-prev" href="#carousel-thumb" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carousel-thumb" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+                <!--/.Thumbnails-->
+                <div id="checkout"></div>
+            </div>
+            <!--/.Carousel Wrapper-->
+            
+        </div>
+        <div class="col-md-8">
+            <h1>@Html.DisplayFor(model => model.Auction.Title)</h1><br />
+
+            <div id="demo" style="font-size:3rem;color:red;">0d: 0h:0m: 0s</div>
+            @if (ViewBag.Win != null)
+            {
+                <h5><b>Winner:</b> <span>@ViewBag.Win.Buyer.Username</span></h5>
+                <h5><b>SalePrice:</b> <span>@ViewBag.Win.Auction.SalePrice $</span></h5>
+            }
+        </div>
+    </div>
+    <div>
+        <dl class="row"  style="border: thin ridge lightgray; border-radius: 10px; padding: 10px; margin: 8%; box-shadow: 5px 5px 5px gray;">
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Auction.Condition)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Auction.Condition)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Category.CategoryName)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Category.CategoryName)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Auction.StartDate)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Auction.StartDate)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Auction.EndDate)
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.Auction.EndDate)
+            </dd>
+            <dt class="col-sm-3">
+                @Html.DisplayNameFor(model => model.Auction.Document)
+            </dt>
+            <dd class="col-sm-9">
+                @if (Model.Auction.Document != null)
+                {
+                    <a href="~/Document/@Model.Auction.Document">@Model.Auction.Document</a>
+                }
+                else
+                {
+                    <i>No file</i>
+                }
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Auction.MinimumBid)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Auction.MinimumBid)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Auction.BidIncremenent)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Auction.BidIncremenent)
+            </dd>
+
+        </dl>
+        <div style="border: thin ridge lightgray; border-radius: 10px; padding: 10px; box-shadow: 5px 5px 5px gray;">
+            <h5><b>Description</b></h5>
+            <p>
+                @Html.Raw(Model.Auction.Description.Replace("\n", "<br />"))
+            </p>
+        </div>
+        
+    </div>
+    <div>
+        @if (Model.Auction.Status == "Active")
+        {
+            @Html.ActionLink("Lock", "InactiveAuction", new { id = Model.Auction.AuctionId })
+        }
+        else if (Model.Auction.Status == "Approval")
+        {
+            @Html.ActionLink("Approval", "ActiveAuction", new { id = Model.Auction.AuctionId })
+        }
+        else if (Model.Auction.Status == "Inactive")
+        {
+            @Html.ActionLink("Delete", "Delete", new { id = Model.Auction.AuctionId }, new { onclick = "return confirm('Are you sure to delete?')" })
+        }
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+
+<script>
+    function convertUTCDateToLocalDate(date) {
+        var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+
+        var offset = date.getTimezoneOffset() / 60;
+        var hours = date.getHours();
+
+        newDate.setHours(hours - offset);
+
+        return newDate;
+    }
+    // Set the date we're counting down to
+
+    var countDownDate = @Model.Auction.EndDate.Subtract(new DateTime(1970, 1, 1, 0, 0, 0)).TotalMilliseconds;
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+    // Get today's date and time
+    var now = new Date();
+    var date = convertUTCDateToLocalDate(new Date(now));
+    var daynow = date.getTime();
+    // Find the distance between now and the count down date
+    var distance = countDownDate - daynow;
+
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Output the result in an element with id="demo"
+  document.getElementById("demo").innerHTML = days + "d :" + hours + "h :"
+  + minutes + "m :" + seconds + "s ";
+
+  // If the count down is over, write some text
+  if (distance < 0) {
+    clearInterval(x);
+      document.getElementById("demo").innerHTML = "FINISH";
+
+  }
+}, 1000);
+
+
+</script>
+<link href="~/css/mdb.min.css" rel="stylesheet" />
+<script src="~/js/mdb.min.js"></script>

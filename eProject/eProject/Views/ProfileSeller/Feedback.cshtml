@@ -1,0 +1,107 @@
+﻿@model IEnumerable<eProject.ViewModel.RatingViewModel>
+@{
+    ViewData["Title"] = "Profile User";
+}
+<div class="container" style="margin-top:8%;">
+    <div class="row" style="border: thin ridge lightgray; border-radius: 10px; padding: 10px;margin-left:5%;margin-left:5%; box-shadow: 5px 5px 5px gray;">
+        <div class="col-md-3">
+            <img src="~/frontend/images/icon-user-removebg-preview.png" width="100" />
+            <p>@ViewBag.user.Username</p>
+        </div>
+
+        <div class="col-md-4">
+            <table class="table">
+                <tr>
+                    <td>Positive</td>
+                    <td>Neutral</td>
+                    <td>Negative</td>
+                </tr>
+                @{
+                    ViewBag.positive = ViewBag.positive != 0 ? ViewBag.positive : 0;
+                    ViewBag.neutral = ViewBag.neutral != 0 ? ViewBag.neutral : 0;
+                    ViewBag.negative = ViewBag.negative != 0 ? ViewBag.negative : 0;
+                }
+                <tr>
+                    <td>@ViewBag.positive</td>
+                    <td>@ViewBag.neutral</td>
+                    <td>@ViewBag.negative</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-3">
+            <a asp-action="Index" asp-controller="ProfileSeller" asp-route-id="@ViewBag.user.UserId">Item of Sale</a>
+        </div>
+    </div>
+    <div class="container" style="border: thin ridge lightgray;box-shadow: 1px 2px 1px gray;margin:1%">
+        <h3>Seller Reviews</h3>
+        @foreach (var item in Model)
+        {
+            
+                <div id="reviews" class="pb-5">
+                    
+                            <p><h7>@item.Reviewer.Username</h7></p>
+                            <i><b>@item.Auction.Title</b></i>&nbsp;&nbsp;&nbsp;<i>@item.Rating.CreateAt</i><br />
+                            @for (var i = 1; i <= item.Rating.Star; i++)
+                            {
+                                <span class="starGlowN"></span>
+                            }
+                            @for (var i = (item.Rating.Star + 1); i <= 10; i++)
+                            {
+                                <span class="starFadeN"></span>
+                            }
+                           <br />
+                            @Html.Raw(item.Rating.Comment.Replace("\n", "<br />"))
+
+                 </div>
+
+
+        }
+        <hr />
+    </div>
+   
+</div>
+
+<script>
+        function SCRate() {
+            for (var i = 1; i <= @ViewBag.RatingAvg; i++) {
+            $("#sRate" + i).attr('class', 'starGlowN');
+        }
+    }
+    $(function(){
+        SCRate();
+    });
+</script>
+<style>
+    /*css cho Rating*/
+
+    .starFade {
+        background-image: url('https://i.imgur.com/l1v62LE.gif');
+        min-width: 20px;
+        min-height: 20px;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .starFadeN {
+        background-image: url('https://i.imgur.com/l1v62LE.gif');
+        min-width: 30px;
+        min-height: 30px;
+        display: inline-block;
+    }
+
+    .starGlow {
+        background-image: url('https://i.imgur.com/hHU12Q5.gif');
+        min-width: 30px;
+        min-height: 30px;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .starGlowN {
+        background-image: url('https://i.imgur.com/hHU12Q5.gif');
+        min-width: 30px;
+        min-height: 30px;
+        display: inline-block;
+    }
+</style>
+

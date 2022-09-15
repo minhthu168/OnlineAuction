@@ -1,0 +1,48 @@
+﻿@model IEnumerable<eProject.ViewModel.ViewRating>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/_Layout.cshtml";
+}
+
+<h1>Review</h1>
+<table class="table table-borderless table-striped">
+    <thead>
+        <tr>
+            <th>Procduct Name</th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating.Star)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating.Comment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating.CreateAt)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.Auction.Title
+            </td>
+            <td>
+                @item.User.Username
+            </td>
+            <td>
+                @item.Rating.Star
+            </td>
+            <td>
+                @item.Rating.Comment
+            </td>
+            <td>
+                @item.Rating.CreateAt
+            </td>           
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,27 @@
+﻿@model Stripe.Checkout.Session
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<br />
+<br />
+
+<button class="btn btn-info" id="btnPay">
+    Pay Now
+</button>
+
+<script>
+    var stripe = Stripe('pk_test_51KFFdMBgF6PMJrwmjp7NH0NvdoMSo4kEEIcSuYHhvSvcVNhckXR9JwFnMcyMQQCirLGiyV9qydoDHPd7iqcbIBWd00luZwFxQL');
+
+    var element = document.getElementById('btnPay');
+
+    element.addEventListener('click', function () {
+        stripe.redirectToCheckout({
+            sessionId: '@Model.Id'
+        }), then(function (result) {
+
+        });
+    });
+</script>

@@ -1,0 +1,48 @@
+﻿@model eProject.Models.User
+@{
+    ViewData["Title"] = "Profile Page";
+}
+
+<div class="container" style="margin:12%;">
+    <div class="row" style="margin:auto;">
+        <div class="col-md-4" style="padding-left:8%;">
+            <!-- Panel -->           
+            <img src="~/frontend/images/icon-user.png" width="200"/>
+            <h3 class="font-weight-bold dark-grey-text" style="padding-left:3%;">
+                <strong>@Model.Username</strong>
+            </h3>
+            <hr /><br />
+            <div class="divider"></div>
+
+            <p class="dark-grey-text"><a asp-action="Index" asp-controller="PageUser" asp-route-id="@Model.UserId" >Profile</a></p>
+            <p class="dark-grey-text"><a asp-action="Edit" asp-controller="PageUser" asp-route-id="@Model.UserId">Edit Information</a></p>
+            <p class="dark-grey-text"><a asp-action="ResetPass" asp-controller="PageUser" asp-route-id="@Model.UserId">Change Password</a></p>
+            <p class="dark-grey-text"><a href="~/AuctionUser/MyAuction">My auction</a></p>
+            <p class="dark-grey-text"><a href="~/AuctionUser/WonAuction">Auction won</a></p>
+            <p class="dark-grey-text"><a href="~/AuctionUser/JoinAuction">Auction participated</a></p>
+            <p class="dark-grey-text"><a>Message</a></p>
+        </div>
+        <div class="col-md-8">
+            <div style="border: 1px ridge lightgray;border-radius: 10px; padding: 10px;box-shadow: 5px 5px 5px gray;">              
+                    <h1 class="text-center">Profile</h1>
+                             
+                <hr />
+                <dl class="row" style="padding:5%">
+                    <dt class="col-sm-3">@Html.DisplayNameFor(s => s.Username)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(a => a.Username)</dd>
+                    <dt class="col-sm-3">@Html.DisplayNameFor(s => s.FullName)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(a => a.FullName)</dd>
+                    <dt class="col-sm-3">@Html.DisplayNameFor(s => s.Address)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(a => a.Address)</dd>
+                    <dt class="col-sm-3">@Html.DisplayNameFor(s => s.Phone)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(a => a.Phone)</dd>
+                    <dt class="col-sm-3">@Html.DisplayNameFor(s => s.Email)</dt>
+                    <dd class="col-sm-8">@Html.DisplayFor(a => a.Email)</dd>
+                    <dt class="col-sm-3">@Html.DisplayNameFor(s => s.Password)</dt>
+                    <dd class="col-sm-8">***<a asp-action="ResetPass" asp-controller="PageUser" asp-route-id="@Model.UserId">Change password</a></dd>
+                </dl>
+                <a asp-action="Edit" asp-controller="PageUser" asp-route-id="@Model.UserId" class="btn btn-primary" style="margin:3%;">Edit</a>
+            </div>            
+        </div>
+    </div>
+</div>

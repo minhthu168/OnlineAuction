@@ -1,0 +1,107 @@
+﻿@model IEnumerable<eProject.ViewModel.CatAuctionUser>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="row" style="margin:auto;margin-top:10%;">
+    <div class="col-md-3" style="padding-left:3%;">
+        <!-- Panel -->
+        <img src="~/frontend/images/icon-user.png" width="200" />
+        <h3 class="font-weight-bold dark-grey-text" style="padding-left:3%;">
+            <strong>@ViewBag.user.Username</strong>
+        </h3><br />
+        <div class="divider"></div>
+
+        <p class="dark-grey-text"><a>Profile</a></p>
+        <p class="dark-grey-text"><a asp-action="Edit" asp-controller="PageUser" asp-route-id="@ViewBag.user.UserId">Edit Information</a></p>
+        <p class="dark-grey-text"><a asp-action="ResetPass" asp-controller="PageUser" asp-route-id="@ViewBag.user.UserId">Change Password</a></p>
+        <p class="dark-grey-text"><a href="~/AuctionUser/MyAuction">My auction</a></p>
+        <p class="dark-grey-text"><a href="~/AuctionUser/WonAuction">Auction won</a></p>
+        <p class="dark-grey-text"><a href="~/AuctionUser/JoinAuction">Auction participated</a></p>
+        <p class="dark-grey-text"><a>Message</a></p>
+    </div>
+    <div class="col-md-8">
+        <h1 class="text-center">My Auction's</h1>
+        <p class="text-danger">@TempData["msg"]</p>
+        <p>
+            <a asp-action="Create" class="btn btn-success">Create New</a>
+        </p>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <!--Grid column-->
+                <div class="col-lg-3 col-md-3 mb-4">
+
+                    <!--Card-->
+                    <div class="card card-ecommerce">
+
+                        <!--Card image-->
+                        <div class="view overlay">
+                            @{
+                                if (item.Auction.Image != null)
+                                {
+                                    var images = item.Auction.Image.Split(",");
+                                    //for (int i = 0; i < images.Length; i++)
+                                    //{
+                                    <img src="~/images/@images[0]" class="img-fluid">
+                                }
+                                else
+                                {
+                                    <img src="~/images/1626433762.jpg" class="img-fluid" />
+                                }
+
+                                @*}*@
+                            }
+                            <a>
+                                <div class="mask rgba-white-slight"></div>
+                            </a>
+                        </div>
+                        <!--Card image-->
+                        <!--Card content-->
+                        <div class="card-body">
+                            <!--Category & Title-->
+
+                            <h5 class="card-title mb-1"><strong><a href="~/PageAuction/Details/@item.Auction.AuctionId" class="text-info">@item.Auction.Title</a></strong></h5>
+                            @if (item.Auction.Status == "Active")
+                            {
+                                <span class="badge badge-danger mb-2">New</span>
+                            }
+                            else if (item.Auction.Status == "Inactive")
+                            {
+                                <span class="badge badge-info mb-2">Finish</span>
+                            }
+                            <br />
+                            <!--Card footer-->
+
+                            <div class="row">
+                                <strong>@item.Auction.SalePrice $</strong>
+
+                            </div>
+                            <p>
+                                <a asp-action="Edit" asp-controller="AuctionUser" asp-route-id="@item.Auction.AuctionId" class="btn btn-primary">Edit</a>
+                                <a asp-action="Delete" asp-controller="AuctionUser" asp-route-id="@item.Auction.AuctionId" class="btn btn-danger">Delete</a>
+                            </p>
+                        </div>
+                        <!--Card content-->
+
+                    </div>
+                    <!--Card-->
+
+                </div>
+                <!--Grid column-->
+            }
+
+
+        </div>
+    </div>
+</div>
+
+
+<style>
+    a{
+        text-decoration:none;
+    }
+</style>
+
+
+

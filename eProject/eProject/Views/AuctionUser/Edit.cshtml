@@ -1,0 +1,68 @@
+﻿@model eProject.Models.Auction
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<header id="header" class="ex-2-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>Edit Auction</h1>
+                
+                <!-- Edit Form -->
+                <div class="form-container">
+                    <form asp-action="Edit" asp-controller="AuctionUser" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="AuctionId" />
+                        <div class="form-group">
+                            <label asp-for="Title" class="control-label"></label>
+                            <input asp-for="Title" class="form-control" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label"></label>
+                            <textarea asp-for="Description" class="form-control"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Image" class="control-label"></label>
+                            
+                            <input type="file" multiple="multiple" name="images" class="form-control" />
+                            <span asp-validation-for="Image" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Document" class="control-label"></label>
+                            <a href="~/Document/@Model.Document">@Model.Document</a>
+                            <input type="file" name="document" class="form-control" />
+                            <span asp-validation-for="Document" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="StartDate"></label>
+                            <input asp-for="StartDate" />&nbsp;&nbsp;&nbsp;
+                            <label asp-for="EndDate"></label>
+                            <input asp-for="EndDate" />
+                            <span asp-validation-for="StartDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="MinimumBid"></label>
+                            <input asp-for="MinimumBid" readonly />&nbsp;&nbsp;
+                            <label asp-for="BidIncremenent"></label>
+                            <input asp-for="BidIncremenent" />
+                            <span asp-validation-for="BidIncremenent" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div> <!-- end of form container -->
+                <!-- end of edit form -->
+
+            </div> <!-- end of col -->
+        </div> <!-- end of row -->
+    </div> <!-- end of container -->
+</header> <!-- end of ex-header -->
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
